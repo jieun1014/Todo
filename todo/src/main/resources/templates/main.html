@@ -6,6 +6,51 @@
     	<title>TodoList</title>
   	</head>
 	<body>
-		Test page!
+		<h1>Todo List</h1></br>
+		<table>
+			<thead>
+				<tr>
+					<th>No</th>
+					<th>Title</th>
+					<th>Contents</th>
+					<th>RegisterDate</th>
+				</tr>
+			</thead>
+			<tbody id="tbody"></tbody>
+		</table>
 	</body>
 <html>
+<script>
+	$(document).ready(function() {
+		$.ajax({
+			url : "/todo",
+			type : "post",
+			datatype : "json",
+			headers : {
+				"Content-Type" : "application/json;charset=UTF-8"
+			},
+			success : function(data) {
+				var html = "";
+				if (data.length > 0 ) {
+					for (i in data) {	
+						html += "";
+						
+						html += "<tr>";
+						html += "<td>data[i].no</td>";
+						html += "<td>data[i].title</td>";
+						html += "<td>data[i].contents</td>";
+						html += "<td>data[i].registerDate</td>";	
+						html += "</tr>";
+					}
+					
+				} else {
+					html += "<tr><td colspan='4'>검색 결과가 없습니다.</td></tr>";
+				}
+					$('#tbody').html(html);
+			},
+			error : function(request, status, error) {
+				console.log("Code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+			}
+		});
+	});
+</script>
