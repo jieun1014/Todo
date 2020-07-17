@@ -1,10 +1,32 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="EUC-KR">
-<title>Insert title here</title>
-</head>
-<body>
-
-</body>
+<html  xmlns:th="http://www.thymeleaf.org"
+   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+  	<head>
+    	<meta charset="UTF-8">
+    	<title>TodoList</title>
+  	</head>
+  	<script src="http://code.jquery.com/jquery-latest.js"></script>
+	<body>
+		<h1>Todo List</h1></br>
+		<form id="registerForm" th:action="@{/todo}" method="post">
+			<input type="hidden" name="_method">
+				Title <input type="text" name="title"><br/>
+				Contents <input type="text" name="contents"><br/>
+				<button type="button" id="add_btn" class="btn btn-outline-primary">등록</button>
+				<input type="button" id="list_btn" value="Back"></td>
+		</form>
+	</body>
 </html>
+<script>
+	$(document).ready(function() {
+			console.log("누름");
+		$("#add_btn").click(function() {
+			$("#registerForm").submit();
+		});
+		
+		$("#list_btn").click(
+				function() {
+					location.href="/todo";
+				});
+	});
+</script>

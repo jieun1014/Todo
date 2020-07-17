@@ -5,9 +5,36 @@
     	<meta charset="UTF-8">
     	<title>TodoList</title>
   	</head>
+  	<script src="http://code.jquery.com/jquery-latest.js"></script>
+  	<style>
+		table {
+		  width: 100%;
+		  border: 1px solid #444444;
+		  border-collapse: collapse;
+		}
+		th, td {
+		  border: 1px solid #444444;
+		}
+	</style>
 	<body>
 		<h1>Todo List</h1></br>
-		<table>
+		<div class="col-md-12">
+			<div class="row">
+				<div class="col-md-6">
+					<a href="/posts/save" role="button" class="btn
+										btn-primary">글 등록</a>
+					 <span th:if="${userName != null and userName != ''}">
+					 	Logged in as: <span id="user" value="${userName}"></span>
+					 	<a href="/logout" class="btn btn-info active" role="button">Logout</a>
+					 </span>
+					 <span th:if="${userName == null or userName == ''}">
+					 	<a href="/oauth2/authorization/google" class="btn btn-success active" role="button">Google Login</a>
+					 </span>
+				</div>
+			</div>
+		</div>
+		
+		<table >
 			<thead>
 				<tr>
 					<th>No</th>
@@ -18,28 +45,34 @@
 			</thead>
 			<tbody id="tbody"></tbody>
 		</table>
+		<div>
+			<button type='button' id='add_button' class='btn btn-outline-primary' onclick="location.href='/todo/new'" >등록</button>
+		</div>
 	</body>
-<html>
-<script>
+</html>
+<script th:inline="javascript">
 	$(document).ready(function() {
+		console.log("document ready");
 		$.ajax({
 			url : "/todo",
-			type : "post",
+			type : "get",
 			datatype : "json",
 			headers : {
 				"Content-Type" : "application/json;charset=UTF-8"
 			},
 			success : function(data) {
+				console.log("ajax success");
 				var html = "";
 				if (data.length > 0 ) {
 					for (i in data) {	
+						console.log(data[i] + " / " + data[i].no);
 						html += "";
 						
 						html += "<tr>";
-						html += "<td>data[i].no</td>";
-						html += "<td>data[i].title</td>";
-						html += "<td>data[i].contents</td>";
-						html += "<td>data[i].registerDate</td>";	
+						html += "<td>" + data[i].no + "</td>";
+						html += "<td>" + data[i].title + "</td>";
+						html += "<td>" + data[i].contents + "</td>";
+						html += "<td>" + data[i].registerDate + "</td>";	
 						html += "</tr>";
 					}
 					
@@ -52,5 +85,12 @@
 				console.log("Code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
 			}
 		});
+		
+		
+		$("#add_btn").click(
+				function() {
+					console.log("main의 addbtn 누름");
+					location.href="add.html";
+				});
 	});
 </script>
